@@ -215,14 +215,11 @@ const SCROLL_THRESHOLD = 150; // 滚动触发距离（像素）
 
 // 缩放相关方法
 const zoomIn = () => {
-  let zoom =  0
+  let zoom = 0;
   if (props.trackZoom < 5) {
     if (props.trackZoom < 1) {
       // 当缩放比例小于1时，每次增加0.1
-      zoom = Math.min(
-        5,
-        Math.round((props.trackZoom + 0.1) * 10) / 10
-      );
+      zoom = Math.min(5, Math.round((props.trackZoom + 0.1) * 10) / 10);
     } else {
       // 当缩放比例大于等于1时，每次增加1
       zoom = Math.min(5, Math.floor(props.trackZoom + 1));
@@ -233,14 +230,11 @@ const zoomIn = () => {
 };
 
 const zoomOut = () => {
-  let zoom = 0
+  let zoom = 0;
   if (props.trackZoom > 0.3) {
     if (props.trackZoom <= 1) {
       // 当缩放比例小于等于1时，每次减少0.1
-      zoom = Math.max(
-        0.3,
-        Math.round((props.trackZoom - 0.1) * 10) / 10
-      );
+      zoom = Math.max(0.3, Math.round((props.trackZoom - 0.1) * 10) / 10);
     } else {
       // 当缩放比例大于1时，每次减少1
       zoom = Math.max(1, Math.floor(props.trackZoom - 1));

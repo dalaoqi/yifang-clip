@@ -7,18 +7,12 @@
     <template v-if="clip">
       <!-- 视频属性 -->
       <template v-if="clip.type === 'video'">
-        <VideoProperties
-          :clip="clip"
-          @update="handleUpdate"
-        />
+        <VideoProperties :clip="clip" @update="handleUpdate" />
       </template>
 
       <!-- 音频属性 -->
       <template v-if="clip.type === 'audio'">
-        <AudioProperties
-          :clip="clip"
-          @update="handleUpdate"
-        />
+        <AudioProperties :clip="clip" @update="handleUpdate" />
       </template>
 
       <!-- 图片属性 -->
@@ -133,48 +127,81 @@ watch(
 
 <style lang="scss">
 :deep(.el-input-number) {
-  @apply w-full;
+  width: 100%;
 }
 
 :deep(.el-input-number .el-input__wrapper) {
-  @apply bg-[#1a1a1a] border-[#333] hover:border-[#666];
+  background-color: #1a1a1a;
+  border-color: #333;
+  &:hover {
+    border-color: #666;
+  }
 }
 
 :deep(.el-textarea__inner) {
-  @apply bg-[#1a1a1a] border-[#333] text-white hover:border-[#666];
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: white;
+  &:hover {
+    border-color: #666;
+  }
 }
 
 :deep(.el-input__inner) {
-  @apply bg-[#1a1a1a] border-[#333] text-white hover:border-[#666];
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: white;
+  &:hover {
+    border-color: #666;
+  }
 }
 
 :deep(.el-select) {
-  @apply w-full;
+  width: 100%;
 }
 
 :deep(.el-select .el-input__wrapper) {
-  @apply bg-[#1a1a1a] border-[#333] hover:border-[#666];
+  background-color: #1a1a1a;
+  border-color: #333;
+  &:hover {
+    border-color: #666;
+  }
 }
 
 :deep(.el-slider) {
-  @apply w-full;
+  width: 100%;
 }
 
 :deep(.el-color-picker) {
-  @apply w-full;
+  width: 100%;
 }
 
 :deep(.el-color-picker .el-color-picker__trigger) {
-  @apply w-full border-[#333] hover:border-[#666];
+  width: 100%;
+  border-color: #333;
+  &:hover {
+    border-color: #666;
+  }
 }
 
 :deep(.el-button) {
-  @apply bg-transparent border-[#333] text-white hover:bg-[#333] hover:border-[#666];
+  background-color: transparent;
+  border-color: #333;
+  color: white;
+  &:hover {
+    background-color: #333;
+    border-color: #666;
+  }
 }
 
 :deep(.el-input-number.is-controls-right .el-input-number__decrease),
 :deep(.el-input-number.is-controls-right .el-input-number__increase) {
-  @apply bg-transparent border-[#333] text-white hover:bg-[#333];
+  background-color: transparent;
+  border-color: #333;
+  color: white;
+  &:hover {
+    background-color: #333;
+  }
 }
 
 :deep(.el-switch) {
@@ -182,30 +209,41 @@ watch(
 }
 
 :deep(.el-collapse) {
-  @apply border-none bg-transparent;
+  border: none;
+  background-color: transparent;
 }
 
 :deep(.el-collapse-item__header) {
-  @apply bg-transparent border-none text-white;
+  background-color: transparent;
+  border: none;
+  color: white;
 }
 
 :deep(.el-collapse-item__content) {
-  @apply bg-transparent text-white p-0;
+  background-color: transparent;
+  color: white;
+  padding: 0;
 }
 
 :deep(.el-collapse-item__arrow) {
-  @apply text-white;
+  color: white;
 }
 
 :deep(.el-dropdown-menu) {
-  @apply bg-[#1a1a1a] border-[#333];
+  background-color: #1a1a1a;
+  border-color: #333;
 }
 
 :deep(.el-dropdown-menu__item) {
-  @apply text-white hover:bg-[#333] hover:text-white;
+  color: white;
+  &:hover {
+    background-color: #333;
+    color: white;
+  }
 }
 
 :deep(.el-dropdown-menu__item:not(.is-disabled):hover) {
-  @apply bg-[#333] text-white;
+  background-color: #333;
+  color: white;
 }
 </style>

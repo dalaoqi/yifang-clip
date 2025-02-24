@@ -405,7 +405,9 @@ const selectedClip = ref(null);
 
 const handleActiveClip = (clip: TrackClip | null) => {
   selectedClip.value = clip;
-  playerRef.value?.activeClip(clip);
+  if (clip?.type !== 'audio') {
+    playerRef.value?.activeClip(clip);
+  }
 };
 
 const addPlayerClip = (clip: TrackClip) => {

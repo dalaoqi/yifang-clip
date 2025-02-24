@@ -321,7 +321,6 @@ const initClip = async (clip: TrackClip) => {
         return tickRet;
       };
       spr = new VisibleSprite(audioClip);
-      spr.visible = false;
       break;
     }
 

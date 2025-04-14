@@ -1,5 +1,5 @@
 import { file, write } from 'opfs-tools';
-import { OPFSFileWrap } from 'opfs-tools/dist/file';
+import type { OTFile } from 'opfs-tools';
 
 /**
  * 将文件存储在OPFS中
@@ -36,7 +36,7 @@ export async function saveFile(
  * @param filePath 文件路径
  * @returns 文件对象
  */
-export async function getFile(filePath: string): Promise<OPFSFileWrap> {
+export async function getFile(filePath: string): Promise<OTFile> {
   return new Promise(async (resolve, reject) => {
     const fileObject = file(filePath);
     resolve(fileObject);

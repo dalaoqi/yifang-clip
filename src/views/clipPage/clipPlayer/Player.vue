@@ -342,11 +342,13 @@ const initClip = async (clip: TrackClip) => {
 
     case 'text': {
       const textClip = new TextClip(clip.textConfig, (width, height) => {
-        emit('updateClipProps', {
-          id: clip.id,
-          w: width,
-          h: height,
-        });
+        if (!isPlaying.value) {
+          emit('updateClipProps', {
+            id: clip.id,
+            w: width,
+            h: height,
+          });
+        }
       });
       spr = new VisibleSprite(textClip);
       break;

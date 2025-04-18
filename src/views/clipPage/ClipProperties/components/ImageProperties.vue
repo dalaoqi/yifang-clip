@@ -1,13 +1,13 @@
 <!--
- * 图片属性设置组件
- * 用于设置图片的位置、旋转、透明度等属性
+ * Image Properties Component
+ * Used to set image position, rotation, opacity, and other properties
 -->
 <template>
   <div class="mb-6">
-    <div class="text-base font-medium text-white mb-4">图片属性</div>
+    <div class="text-base font-medium text-white mb-4">Image Properties</div>
     <div class="grid grid-cols-2 gap-3 mb-4">
       <div>
-        <div class="text-base text-[#999] mb-1">X 坐标</div>
+        <div class="text-base text-[#999] mb-1">X Coordinate</div>
         <el-input-number
           class="w-30"
           v-model="clip.x"
@@ -18,7 +18,7 @@
         />
       </div>
       <div>
-        <div class="text-base text-[#999] mb-1">Y 坐标</div>
+        <div class="text-base text-[#999] mb-1">Y Coordinate</div>
         <el-input-number
           class="w-30"
           v-model="clip.y"
@@ -29,9 +29,9 @@
         />
       </div>
     </div>
-    <!-- 旋转角度 -->
+    <!-- Rotation Angle -->
     <div class="mb-4">
-      <div class="text-base text-[#999] mb-2">旋转角度</div>
+      <div class="text-base text-[#999] mb-2">Rotation Angle</div>
       <div class="flex items-center gap-4">
         <div class="w-full">
           <el-input-number
@@ -53,7 +53,7 @@
           @mouseleave="stopRotate"
         >
           <div class="w-8 h-8 rounded-full border border-[#af24ff] relative">
-            <!-- 旋转指针 -->
+            <!-- Rotation Indicator -->
             <div
               class="absolute w-[1px] h-[13px] bg-[#af24ff]"
               :style="{
@@ -73,7 +73,7 @@
     </div>
     <div class="flex items-center gap-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">不透明度</div>
+        <div class="text-base text-[#999] mb-1">Opacity</div>
         <div class="flex items-center gap-3">
           <el-slider v-model="clip.opacity" :min="0" :max="100" :step="1" />
           <div class="w-12 text-right">{{ Math.round(clip.opacity) }}%</div>
@@ -95,7 +95,7 @@ const emit = defineEmits(['update']);
 
 const isDragging = ref(false);
 
-// 弧度转角度
+// Radians to Degrees
 const toDegree = (radian: number) => {
   let degree = radian * (180 / Math.PI);
   degree = degree % 360;
@@ -103,12 +103,12 @@ const toDegree = (radian: number) => {
   return Math.round(degree);
 };
 
-// 角度转弧度
+// Degrees to Radians
 const toRadian = (degree: number) => {
   return degree * (Math.PI / 180);
 };
 
-// 显示角度
+// Display Angle
 const displayAngle = computed(() => {
   if (props.clip?.angle === undefined) return 0;
   let angle = toDegree(props.clip.angle);
@@ -116,7 +116,7 @@ const displayAngle = computed(() => {
   return angle;
 });
 
-// 输入框显示的角度
+// Angle Displayed in Input Box
 const displayInputAngle = computed({
   get: () => {
     if (props.clip?.angle === undefined) return 0;
@@ -128,7 +128,7 @@ const displayInputAngle = computed({
   },
 });
 
-// 处理角度输入
+// Handle Angle Input
 const handleAngleInput = (val: number | null) => {
   if (!props.clip) return;
   if (val === null || isNaN(val)) {
@@ -140,12 +140,12 @@ const handleAngleInput = (val: number | null) => {
   props.clip.angle = toRadian(degree);
 };
 
-// 开始旋转
+// Start Rotation
 const startRotate = (e: MouseEvent) => {
   isDragging.value = true;
 };
 
-// 处理旋转
+// Handle Rotation
 const handleRotate = (e: MouseEvent) => {
   if (!isDragging.value || !props.clip) return;
 
@@ -161,12 +161,12 @@ const handleRotate = (e: MouseEvent) => {
   emit('update', props.clip);
 };
 
-// 停止旋转
+// Stop Rotation
 const stopRotate = () => {
   isDragging.value = false;
 };
 
-// 处理默认值为0
+// Handle Default Zero
 const handleDefaultZero = (val: number | null, prop: string) => {
   if (!props.clip) return;
   if (val === null || isNaN(val)) {

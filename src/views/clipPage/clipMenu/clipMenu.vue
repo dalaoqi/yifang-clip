@@ -22,9 +22,9 @@ import TextLibrary from './components/textLibrary.vue';
 import FilterLibrary from './components/filterLibrary.vue';
 
 const menuList = [
-  { name: '媒体库', component: MediaLibrary },
-  { name: '文字', component: TextLibrary },
-  { name: '滤镜', component: FilterLibrary },
+  { name: 'Media Library', component: MediaLibrary },
+  { name: 'Text', component: TextLibrary },
+  { name: 'Filter', component: FilterLibrary },
   // { name: 'Role', component: 'Role' },
   // { name: 'Task', component: 'Task' },
 ];

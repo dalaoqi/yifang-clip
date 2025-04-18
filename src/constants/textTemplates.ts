@@ -2,10 +2,10 @@ import { generateTextImage, getAssetsFile } from '@/utils/pub-use';
 
 export const textTemplates = [
   {
-    preview: getAssetsFile('text/1.png'),
-    name: '描边标题',
+    preview: getAssetsFile('text/1.png'), // Preview image path
+    name: 'Outline Title',
     style: {
-      content: '描边文字效果',
+      content: 'Outlined Text Effect',
       fontSize: 48,
       fontFamily: 'Microsoft YaHei',
       bold: true,
@@ -27,9 +27,9 @@ export const textTemplates = [
   },
   {
     preview: getAssetsFile('text/2.png'),
-    name: '阴影标题',
+    name: 'Shadow Title',
     style: {
-      content: '阴影文字效果',
+      content: 'Shadow Text Effect',
       fontSize: 52,
       fontFamily: 'Microsoft YaHei',
       bold: true,
@@ -66,5 +66,5 @@ function getTextConfig(textTemplate) {
     ...textTemplate.style,
   };
 }
-// !新增新的文字时，需要生成图片, 自行放置生成的图片地址，然后注释下面这行代码
+// !When adding a new text style, generate the image and manually set its preview path.
 // generateTextImage(getTextConfig(textTemplates[1]));

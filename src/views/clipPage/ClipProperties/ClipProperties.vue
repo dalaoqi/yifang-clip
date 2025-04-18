@@ -5,27 +5,27 @@
 <template>
   <div class="p-6 text-white">
     <template v-if="clip">
-      <!-- 视频属性 -->
+      <!-- Video Properties -->
       <template v-if="clip.type === 'video'">
         <VideoProperties :clip="clip" @update="handleUpdate" />
       </template>
 
-      <!-- 音频属性 -->
+      <!-- Audio Properties -->
       <template v-if="clip.type === 'audio'">
         <AudioProperties :clip="clip" @update="handleUpdate" />
       </template>
 
-      <!-- 图片属性 -->
+      <!-- Image Properties -->
       <template v-if="clip.type === 'image'">
         <ImageProperties :clip="clip" @update="handleUpdate" />
       </template>
 
-      <!-- 文字属性 -->
+      <!-- Text Properties -->
       <template v-if="clip.type === 'text'">
         <TextProperties :clip="clip" @update="handleUpdate" />
       </template>
 
-      <!-- 滤镜属性 -->
+      <!-- Filter Properties -->
       <template v-if="clip.type === 'filter'">
         <FilterProperties
           :clip="clip as unknown as FilterTrackClip"
@@ -33,7 +33,7 @@
         />
       </template>
     </template>
-    <div v-else class="text-center text-[#999] text-base">请选择一个片段</div>
+    <div v-else class="text-center text-[#999] text-base">Select a clip</div>
   </div>
 </template>
 
@@ -121,7 +121,7 @@ watch(
     if (!newClip) return;
     trackStore.publishClipUpdate(newClip);
   },
-  { deep: true }
+  { deep: true },
 );
 </script>
 

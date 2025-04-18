@@ -12,9 +12,9 @@
         <div class="flex items-center justify-center">
           <el-icon class="mr-1" size="30"><upload-filled /></el-icon>
           <div class="flex flex-col items-start">
-            <div class="text-tiny">拖拽或上传文件</div>
+            <div class="text-tiny">Drag or Upload Files</div>
             <div class="flex items-center justify-center text-xs">
-              支持视频、音频、图片格式
+              Supports video, audio, and image formats
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
               }"
             >
               <div class="px-3 py-0.5 text-tiny hover:bg-gray cursor-pointer">
-                裁剪
+                Trim
               </div>
             </div>
           </div>
@@ -228,7 +228,7 @@ const beforeUpload = async (fileObject: any) => {
             const { video: data2 }: any = await imgClip.tick(1000000);
             const offscreenCanvas = new OffscreenCanvas(
               data1.codedWidth,
-              data1.codedHeight
+              data1.codedHeight,
             );
             const ctx = offscreenCanvas.getContext('2d');
             ctx.drawImage(data1, 0, 0);
@@ -236,7 +236,7 @@ const beforeUpload = async (fileObject: any) => {
               0,
               0,
               data1.codedWidth,
-              data1.codedHeight
+              data1.codedHeight,
             );
             ctx.clearRect(0, 0, data1.codedWidth, data1.height);
             ctx.drawImage(data2, 0, 0);
@@ -244,7 +244,7 @@ const beforeUpload = async (fileObject: any) => {
               0,
               0,
               data2.codedWidth,
-              data2.codedHeight
+              data2.codedHeight,
             );
             const isSame = compareImageData(imageData1.data, imageData2.data);
             media.isAnimateImg = true;

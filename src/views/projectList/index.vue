@@ -1,8 +1,10 @@
 <template>
   <div class="project-list">
     <div class="header">
-      <h1>我的剪辑项目</h1>
-      <el-button type="primary" @click="createNewProject">新建项目</el-button>
+      <h1>My Editing Projects</h1>
+      <el-button type="primary" @click="createNewProject"
+        >New Project</el-button
+      >
     </div>
 
     <div v-if="!projects.length" class="empty-state">
@@ -10,13 +12,13 @@
         <el-icon class="empty-icon">
           <VideoCamera />
         </el-icon>
-        <p class="empty-text">还没有创建任何项目</p>
-        <p class="empty-subtext">点击"新建项目"开始创作吧！</p>
+        <p class="empty-text">No projects created yet</p>
+        <p class="empty-subtext">Click "New Project" to get started!</p>
         <el-button type="primary" class="mt-4" @click="createNewProject">
           <el-icon class="mr-2">
             <Plus />
           </el-icon>
-          新建项目
+          New Project
         </el-button>
       </div>
     </div>
@@ -28,9 +30,9 @@
             v-if="project.thumbnail"
             class="rounded-t-xl"
             :src="project.thumbnail"
-            alt="项目缩略图"
+            alt="Project Thumbnail"
           />
-          <div v-else class="placeholder">无缩略图</div>
+          <div v-else class="placeholder">No Thumbnail</div>
         </div>
         <div class="info">
           <div class="flex justify-between items-center">
@@ -40,17 +42,17 @@
               size="small"
               @click.stop="confirmDelete(project)"
             >
-              删除
+              Delete
             </el-button>
           </div>
-          <p>更新时间：{{ formatDate(project.updateTime) }}</p>
+          <p>Last updated: {{ formatDate(project.updateTime) }}</p>
         </div>
       </div>
     </div>
 
-    <el-dialog v-model="dialogVisible" title="新建项目">
+    <el-dialog v-model="dialogVisible" title="Create New Project">
       <el-form :model="newProject" @submit.prevent="handleCreateProject">
-        <el-form-item label="项目名称">
+        <el-form-item label="Project Name">
           <el-input
             v-model="newProject.name"
             ref="inputRef"
@@ -59,19 +61,27 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleCreateProject">确定</el-button>
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleCreateProject"
+          >Create</el-button
+        >
       </template>
     </el-dialog>
 
-    <el-dialog v-model="deleteDialogVisible" title="删除确认" width="30%">
-      <span
-        >确定要删除项目"{{ projectToDelete?.name }}"吗？此操作不可恢复。</span
-      >
+    <el-dialog
+      v-model="deleteDialogVisible"
+      title="Delete Confirmation"
+      width="30%"
+    >
+      <span>
+        Are you sure you want to delete the project "{{
+          projectToDelete?.name
+        }}"? This action cannot be undone.
+      </span>
       <template #footer>
-        <el-button @click="deleteDialogVisible = false">取消</el-button>
+        <el-button @click="deleteDialogVisible = false">Cancel</el-button>
         <el-button type="danger" @click="handleDeleteProject"
-          >确定删除</el-button
+          >Confirm Delete</el-button
         >
       </template>
     </el-dialog>

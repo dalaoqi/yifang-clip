@@ -1,20 +1,20 @@
 <template>
   <div class="p-4">
     <div class="grid grid-cols-2 gap-4">
-      <!-- 基础文字 -->
+      <!-- Basic Text -->
       <div
         class="relative group cursor-pointer bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-lg p-4 flex flex-col items-center"
         @click="handleAddText(basicTemplate)"
         draggable="true"
         @dragstart="handleDragStart(basicTemplate)"
       >
-        <!-- 预览效果 -->
+        <!-- Preview Effect -->
         <div class="h-8 text-white text-xl mb-2">
           {{ basicTemplate.preview }}
         </div>
-        <!-- 模板名称 -->
+        <!-- Template Name -->
         <div class="text-[#666] text-sm">{{ basicTemplate.name }}</div>
-        <!-- 悬停时显示的添加按钮 -->
+        <!-- Add Button on Hover -->
         <div
           class="absolute inset-0 bg-purple-500/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg"
         >
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <!-- 花字模板 -->
+      <!-- Fancy Text Templates -->
       <div
         v-for="template in textTemplates"
         :key="template.name"
@@ -36,9 +36,9 @@
         <div class="h-8 text-white text-xl mb-2">
           <img :src="template.preview" class="w-full h-full object-contain" />
         </div>
-        <!-- 模板名称 -->
+        <!-- Template Name -->
         <div class="text-[#666] text-sm">{{ basicTemplate.name }}</div>
-        <!-- 悬停时显示的添加按钮 -->
+        <!-- Add Button on Hover -->
         <div
           class="absolute inset-0 bg-purple-500/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg"
         >
@@ -74,10 +74,10 @@ const addClip = inject('addClip') as
   | ((clip: TrackClip, createNewTrack?: boolean) => void)
   | undefined;
 
-// 基础文字模板
+// Basic Text Template
 const basicTemplate = ref<TextTemplate>({
   preview: 'Aa',
-  name: '基础文字',
+  name: 'Basic Text',
   style: {
     fontSize: 72,
     fontFamily: 'Microsoft YaHei',
@@ -85,20 +85,20 @@ const basicTemplate = ref<TextTemplate>({
   },
 });
 
-// 处理拖拽开始
+// Handle Drag Start
 const handleDragStart = (template: TextTemplate) => {
   const textClip = createTextClip(template);
   trackStore.setDragData(textClip);
 };
 
-// 处理点击添加
+// Handle Add Text Click
 const handleAddText = (template: TextTemplate) => {
   const textClip = createTextClip(template);
-  // 使用注入的 addClip 方法
+  // Use injected addClip method
   addClip?.(textClip as TrackClip, true);
 };
 
-// 创建文字clip
+// Create Text Clip
 const createTextClip = (template: TextTemplate) => {
   return {
     id: v4(),
@@ -110,7 +110,7 @@ const createTextClip = (template: TextTemplate) => {
     opacity: 100,
     angle: 0,
     textConfig: {
-      content: template.name || '基础文字',
+      content: template.name || 'Basic Text',
       lineSpacing: 0,
       letterSpacing: 0,
       showStroke: false,

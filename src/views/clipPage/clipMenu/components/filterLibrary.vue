@@ -1,6 +1,6 @@
 <!--
- * 滤镜库组件
- * 提供各种视频滤镜效果，支持拖拽添加到轨道
+ * Filter Library Component
+ * Provides various video filter effects, supports drag-and-drop to add to tracks
 -->
 <template>
   <div class="p-4">
@@ -21,7 +21,7 @@
           />
         </div>
         <div class="text-[#666] text-sm">{{ filter.name }}</div>
-        <!-- 悬停时显示的添加按钮 -->
+        <!-- Add button shown on hover -->
         <div
           class="absolute inset-0 bg-purple-500/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg"
         >
@@ -41,23 +41,23 @@ import type { FilterType, FilterTrackClip, TrackClip } from '@/types/track';
 import { Plus } from '@element-plus/icons-vue';
 
 const trackStore = useTrackStore();
-// 预览图片
+// Preview image
 const previewImage = '/preview.jpg';
 
 const addClip = inject('addClip') as
   | ((clip: TrackClip, createNewTrack?: boolean) => void)
   | undefined;
 
-// 滤镜列表
+// Filter list
 const filterList = [
-  { type: 'grayscale' as FilterType, name: '黑白' },
-  { type: 'sepia' as FilterType, name: '复古' },
-  { type: 'invert' as FilterType, name: '反色' },
-  { type: 'brightness' as FilterType, name: '明亮' },
-  { type: 'blur' as FilterType, name: '模糊' },
+  { type: 'grayscale' as FilterType, name: 'Black & White' },
+  { type: 'sepia' as FilterType, name: 'Sepia' },
+  { type: 'invert' as FilterType, name: 'Invert' },
+  { type: 'brightness' as FilterType, name: 'Bright' },
+  { type: 'blur' as FilterType, name: 'Blur' },
 ];
 
-// 获取滤镜样式
+// Get filter style
 const getFilterStyle = (type: FilterType) => {
   switch (type) {
     case 'grayscale':
@@ -75,14 +75,14 @@ const getFilterStyle = (type: FilterType) => {
   }
 };
 
-// 处理拖拽开始
+// Handle drag start
 const handleDragStart = (
   event: DragEvent,
-  filter: { type: FilterType; name: string }
+  filter: { type: FilterType; name: string },
 ) => {
   if (!event.dataTransfer) return;
 
-  // 创建新的滤镜片段
+  // Create new filter clip
   const newClip: FilterTrackClip = {
     id: v4(),
     type: 'filter',
@@ -95,15 +95,15 @@ const handleDragStart = (
     originalDuration: 5,
   };
 
-  // 设置拖拽数据
+  // Set drag data
   event.dataTransfer.setData('application/json', JSON.stringify(newClip));
   trackStore.setDragData(newClip);
   event.dataTransfer.effectAllowed = 'copy';
 };
 
-// 处理添加滤镜
+// Handle add filter
 const handleAddFilter = (filter: { type: FilterType; name: string }) => {
-  // 创建新的滤镜片段
+  // Create new filter clip
   const newClip: FilterTrackClip = {
     id: v4(),
     type: 'filter',

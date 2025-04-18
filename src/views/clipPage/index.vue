@@ -1,23 +1,23 @@
 <!--
-  * 视频剪辑页面主组件
-  * 包含左侧菜单、中间播放器和属性面板、底部轨道编辑区域
-  * 实现了视频剪辑的核心功能
+  * Main component of the video editing page
+  * Includes the left menu, central player and properties panel, and bottom track editing area
+  * Implements the core functionality of video editing
 -->
 <template>
-  <!-- 主容器：使用Tailwind CSS进行样式设置 -->
+  <!-- Main container: Styled using Tailwind CSS -->
   <div
     class="w-full h-full flex bg-[#1b1b1d] overflow-hidden"
     @click="closeContextMenu"
   >
-    <!-- 左侧菜单区域 -->
+    <!-- Left menu area -->
     <div id="left" class="h-screen">
       <ClipMenu />
     </div>
-    <!-- 中间主要内容区域 -->
+    <!-- Central main content area -->
     <div id="right" class="h-screen overflow-hidden">
-      <!-- 顶部区域：包含播放器和属性面板 -->
+      <!-- Top area: Contains player and properties panel -->
       <div id="top" class="flex justify-between">
-        <!-- 播放器区域 -->
+        <!-- Player area -->
         <div id="topLeft" class="w-4/5">
           <Player
             ref="playerRef"
@@ -32,7 +32,7 @@
             @updateClipProps="updateClipProps"
           />
         </div>
-        <!-- 右侧属性面板 -->
+        <!-- Right properties panel -->
         <div id="topRight" class="w-1/5 bg-[#303030]">
           <ClipProperties
             :clip="selectedClip"
@@ -41,7 +41,7 @@
           />
         </div>
       </div>
-      <!-- 底部轨道编辑区域 -->
+      <!-- Bottom track editing area -->
       <div id="bottom" class="bg-[#201f20]">
         <ClipTrack
           ref="clipTrackRef"
@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 /**
- * 导入所需的组件和工具
+ * Import required components and utilities
  */
 import Player from './clipPlayer/Player.vue';
 import { useTrackStore } from '@/store/modules/track';
@@ -88,8 +88,8 @@ import { dataURLToBuffer } from '@/utils/opfs-file';
 import { write } from 'opfs-tools';
 
 /**
- * 禁用浏览器默认的缩放行为
- * 防止Ctrl+滚轮触发浏览器缩放，影响编辑体验
+ * Disable default browser zoom behavior
+ * Prevent Ctrl+wheel from triggering browser zoom, affecting the editing experience
  */
 const disableZoom = (e: WheelEvent) => {
   if (e.ctrlKey) {
@@ -108,44 +108,45 @@ onUnmounted(() => {
 const route = useRoute();
 const trackStore = useTrackStore();
 const projectId = Number(route.params.id);
-const MAX_TRACKS_NUM = 10; // 最大轨道数量
-const MIN_DURATION = 300; // 最小时长5分钟（秒）
-const BUFFER_DURATION = 5; // 缓冲时长（秒）
+const MAX_TRACKS_NUM = 10; // Maximum number of tracks
+const MIN_DURATION = 300; // Minimum duration of 5 minutes (seconds)
+const BUFFER_DURATION = 5; // Buffer duration (seconds)
 
-// Split布局相关
+// Split layout related
 const SPLIT_STORAGE_KEY = 'split-sizes';
 const DEFAULT_HORIZONTAL_SIZES = [25, 75];
 const DEFAULT_VERTICAL_SIZES = [65, 35];
 
-// 轨道相关常量
-const BASE_TICK_SPACING = 3; // 基础刻度间距(px)
-const MIN_CLIP_WIDTH = 30; // 最小片段宽度(px)
+// Track-related constants
+const BASE_TICK_SPACING = 3; // Base tick spacing (px)
+const MIN_CLIP_WIDTH = 30; // Minimum clip width (px)
 const ZOOM_STORAGE_KEY = 'track-zoom-value';
 
-// 从 localStorage 获取缩放值
+// Retrieve zoom value from localStorage
 const trackZoom = ref(
-  parseFloat(localStorage.getItem(ZOOM_STORAGE_KEY) || '1')
+  parseFloat(localStorage.getItem(ZOOM_STORAGE_KEY) || '1'),
 );
 
 const updateTrackZoom = (zoom: number) => {
   trackZoom.value = zoom;
   localStorage.setItem(ZOOM_STORAGE_KEY, zoom.toString());
 };
-// 计算属性
-const frameLength = computed(() => BASE_TICK_SPACING * trackZoom.value * 10); // 每秒占据的像素
-const minClipDuration = computed(() => MIN_CLIP_WIDTH / frameLength.value); // 根据缩放计算最小持续时间
 
-// 轨道数据
+// Computed properties
+const frameLength = computed(() => BASE_TICK_SPACING * trackZoom.value * 10); // Pixels per second
+const minClipDuration = computed(() => MIN_CLIP_WIDTH / frameLength.value); // Minimum duration based on zoom
+
+// Track data
 const tracks = ref<Track[]>([]);
 const currentTime = ref(0);
-// 计算时间轴的总时长
+// Compute total timeline duration
 const timelineDuration = computed(() => {
-  // 最大endTime加缓冲时长，且不小于最小时长
+  // Maximum endTime plus buffer duration, not less than minimum duration
   return Math.max(playerDuration.value + BUFFER_DURATION, MIN_DURATION);
 });
-// 计算播放器总时长
+// Compute total player duration
 const playerDuration = computed(() => {
-  // 找出所有轨道中最大的endTime
+  // Find the maximum endTime across all tracks
   let maxEndTime = 0;
   tracks.value.forEach((track) => {
     track.clips.forEach((clip) => {
@@ -186,26 +187,26 @@ const nextFrame = () => {
   currentTime.value += 30 / 1000 / 1000;
 };
 
-// 提供 addClip 方法给所有子组件使用
+// Provide addClip method to all child components
 provide('addClip', async (clip: TrackClip, createNewTrack?: boolean) => {
-  // 设置 clip 的开始时间为当前时间
+  // Set clip start time to current time
   clip.startTime = currentTime.value;
   clip.endTime = currentTime.value + clip.duration;
 
-  // 对于视频类型，设置源时间相关属性
+  // For video type, set source time-related properties
   if (clip.type === 'video') {
     clip.sourceStartTime = 0;
     clip.sourceEndTime = 0;
     clip.originalDuration = clip.duration;
   }
 
-  // 获取视频关键帧或图片缩略图
+  // Fetch video keyframes or image thumbnails
   if (clip.type === 'video' || clip.type === 'image') {
     const res = await getKeyframes(clip as Media);
     clip.thumbnail = res.data as { url: string; timestamp: number }[];
   }
 
-  // 获取音频波形数据
+  // Fetch audio waveform data
   if (clip.type === 'audio') {
     const res = await getVolume(clip as Media);
     if (res.type === 'audio') {
@@ -213,10 +214,12 @@ provide('addClip', async (clip: TrackClip, createNewTrack?: boolean) => {
     }
   }
 
-  // 如果需要创建新轨道
+  // Create new track if needed
   if (createNewTrack) {
     if (tracks.value.length >= MAX_TRACKS_NUM) {
-      ElMessage.warning(`轨道数量已达到最大限制(${MAX_TRACKS_NUM})`);
+      ElMessage.warning(
+        `Track count has reached the maximum limit (${MAX_TRACKS_NUM})`,
+      );
       return;
     }
     const newTrack: Track = {
@@ -225,7 +228,7 @@ provide('addClip', async (clip: TrackClip, createNewTrack?: boolean) => {
     };
     tracks.value.push(newTrack);
   } else {
-    // 否则添加到最后一个轨道
+    // Otherwise, add to the last track
     if (tracks.value.length === 0) {
       tracks.value.push({
         id: '0',
@@ -234,13 +237,13 @@ provide('addClip', async (clip: TrackClip, createNewTrack?: boolean) => {
     }
     tracks.value[tracks.value.length - 1].clips.push(clip);
   }
-  // 更新播放器
+  // Update player
   nextTick(() => {
     playerRef.value?.refreshPlayer();
   });
 });
 
-// 提供 activeClip 方法，在需要时激活轨道中的clip
+// Provide activeClip method to activate a clip in the track when needed
 provide('activeClip', (id: string | null) => {
   if (id) {
     const clip = tracks.value
@@ -259,7 +262,7 @@ provide('activeClip', (id: string | null) => {
 const playerWidth = ref(0);
 const playerHeight = ref(0);
 onMounted(async () => {
-  // 从localStorage获取Split布局数据
+  // Retrieve Split layout data from localStorage
   const savedSizes = localStorage.getItem(SPLIT_STORAGE_KEY);
   const { horizontalSizes, verticalSizes } = savedSizes
     ? JSON.parse(savedSizes)
@@ -268,13 +271,13 @@ onMounted(async () => {
         verticalSizes: DEFAULT_VERTICAL_SIZES,
       };
 
-  // 初始化水平分割
+  // Initialize horizontal split
   Split(['#left', '#right'], {
     sizes: horizontalSizes,
     minSize: [250, 500],
     snapOffset: 0,
     onDragEnd: (sizes) => {
-      // 保存新的水平分割尺寸
+      // Save new horizontal split sizes
       const savedSizes = localStorage.getItem(SPLIT_STORAGE_KEY);
       const sizeData = savedSizes ? JSON.parse(savedSizes) : {};
       localStorage.setItem(
@@ -282,19 +285,19 @@ onMounted(async () => {
         JSON.stringify({
           ...sizeData,
           horizontalSizes: sizes,
-        })
+        }),
       );
     },
   });
 
-  // 初始化垂直分割
+  // Initialize vertical split
   Split(['#top', '#bottom'], {
     direction: 'vertical',
     sizes: verticalSizes,
     minSize: [250, 150],
     snapOffset: 0,
     onDragEnd: (sizes) => {
-      // 保存新的垂直分割尺寸
+      // Save new vertical split sizes
       const savedSizes = localStorage.getItem(SPLIT_STORAGE_KEY);
       const sizeData = savedSizes ? JSON.parse(savedSizes) : {};
       localStorage.setItem(
@@ -302,7 +305,7 @@ onMounted(async () => {
         JSON.stringify({
           ...sizeData,
           verticalSizes: sizes,
-        })
+        }),
       );
     },
   });
@@ -383,14 +386,14 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 );
 
-// 在保存轨道数据时更新项目
+// Update project when saving track data
 const saveProject = async () => {
   const project = await db.projects.where({ id: projectId }).first();
   if (project) {
-    // 需要深拷贝 tracks 数组,避免 IDB 克隆错误
+    // Deep clone tracks array to avoid IDB cloning errors
     const rawTracks = cloneDeep(tracks.value);
     rawTracks.forEach((track) => {
       track.clips.forEach((clip) => {
@@ -414,7 +417,7 @@ const addPlayerClip = (clip: TrackClip) => {
   playerRef.value?.addClip(clip);
 };
 
-// 删除没有clip的轨道
+// Delete tracks with no clips
 const deleteEmptyTrack = () => {
   tracks.value = tracks.value.filter((track) => track.clips.length > 0);
 };

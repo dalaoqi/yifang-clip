@@ -1,39 +1,39 @@
 <!--
- * 音频属性设置组件
- * 用于设置音频的音量、去片头片尾等属性
+ * Audio Properties Component
+ * Used to set audio volume, trim start/end, and other properties
 -->
 <template>
   <div class="mb-6">
-    <div class="text-base font-medium text-white mb-4">音频属性</div>
+    <div class="text-base font-medium text-white mb-4">Audio Properties</div>
     <div class="flex gap-3 mb-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">去片头</div>
+        <div class="text-base text-[#999] mb-1">Trim Start</div>
         <el-input-number
           class="w-30"
           v-model="clip.sourceStartTime"
           size="small"
           :min="0"
           :step="0.1"
-          placeholder="去片头时间"
+          placeholder="Trim start time"
           @change="handleChangeHead"
         />
       </div>
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">去片尾</div>
+        <div class="text-base text-[#999] mb-1">Trim End</div>
         <el-input-number
           class="w-30"
           v-model="clip.sourceEndTime"
           size="small"
           :min="0"
           :step="0.1"
-          placeholder="去片尾时间"
+          placeholder="Trim end time"
           @change="handleChangeTail"
         />
       </div>
     </div>
     <div class="flex items-center gap-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">音量</div>
+        <div class="text-base text-[#999] mb-1">Volume</div>
         <div class="flex items-center gap-3">
           <el-slider v-model="clip.volume" :min="0" :max="100" :step="1" />
           <Icon
@@ -68,15 +68,15 @@ const props = defineProps<{
 
 const emit = defineEmits(['update']);
 
-// 注入处理方法
+// Inject handler methods
 const handleChangeHead = inject('handleChangeHead') as (
-  val: number | null
+  val: number | null,
 ) => void;
 const handleChangeTail = inject('handleChangeTail') as (
-  val: number | null
+  val: number | null,
 ) => void;
 
-// 处理默认值为0
+// Handle default zero
 const handleDefaultZero = (val: number | null, prop: string) => {
   if (!props.clip) return;
   if (val === null || isNaN(val)) {

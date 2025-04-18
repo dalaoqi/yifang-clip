@@ -1,21 +1,21 @@
 <!--
-  * 视频轨道编辑组件
-  * 实现了视频片段的编辑、排列、缩放等功能
-  * 包含时间轴、轨道列表等核心编辑功能
+  * Video Track Editing Component
+  * Implements video clip editing, arrangement, and zooming functionalities
+  * Includes timeline, track list, and core editing features
 -->
 <template>
-  <!-- 主容器：设置基础样式和禁用文本选择 -->
+  <!-- Main container: Sets base styles and disables text selection -->
   <div class="w-full h-full bg-[#201f20] relative overflow-hidden select-none">
-    <!-- 工具栏区域：包含各种编辑操作按钮 -->
+    <!-- Toolbar area: Contains various editing operation buttons -->
     <div class="flex justify-between items-center px-4 py-2">
-      <!-- 左侧工具按钮组 -->
+      <!-- Left tool button group -->
       <div class="flex items-center gap-4">
-        <!-- 重置轨道按钮：清空所有轨道内容 -->
+        <!-- Reset track button: Clears all track content -->
         <el-popconfirm
           id="reset-button"
-          title="确定要重置轨道吗？"
-          confirm-button-text="确定"
-          cancel-button-text="取消"
+          title="Are you sure you want to reset the track?"
+          confirm-button-text="Confirm"
+          cancel-button-text="Cancel"
           @confirm="handleReset"
         >
           <template #reference>
@@ -25,8 +25,8 @@
           </template>
         </el-popconfirm>
 
-        <!-- 撤销按钮：撤销上一步操作 -->
-        <el-tooltip content="撤销" placement="top">
+        <!-- Undo button: Reverts the last operation -->
+        <el-tooltip content="Undo" placement="top">
           <button
             id="undo-button"
             class="text-white hover:text-purple-500 transition-colors"
@@ -37,8 +37,8 @@
           </button>
         </el-tooltip>
 
-        <!-- 恢复按钮：重做上一步被撤销的操作 -->
-        <el-tooltip content="恢复" placement="top">
+        <!-- Redo button: Reapplies the last undone operation -->
+        <el-tooltip content="Redo" placement="top">
           <button
             id="redo-button"
             class="text-white hover:text-purple-500 transition-colors"
@@ -49,8 +49,8 @@
           </button>
         </el-tooltip>
 
-        <!-- 分割按钮：将选中的视频片段分割成两部分 -->
-        <el-tooltip content="分割" placement="top">
+        <!-- Split button: Splits the selected video clip into two parts -->
+        <el-tooltip content="Split" placement="top">
           <button
             id="split-button"
             class="text-white hover:text-purple-500 transition-colors"
@@ -64,8 +64,8 @@
           </button>
         </el-tooltip>
 
-        <!-- 删除按钮：删除选中的视频片段 -->
-        <el-tooltip content="删除" placement="top">
+        <!-- Delete button: Deletes the selected video clip -->
+        <el-tooltip content="Delete" placement="top">
           <button
             id="delete-button"
             class="text-white hover:text-purple-500 transition-colors"
@@ -76,10 +76,10 @@
         </el-tooltip>
       </div>
 
-      <!-- 右侧缩放控制区域 -->
+      <!-- Right zoom control area -->
       <div class="flex items-center gap-2">
-        <!-- 缩小按钮：减小时间轴刻度 -->
-        <el-tooltip content="缩小" placement="top">
+        <!-- Zoom out button: Decreases timeline scale -->
+        <el-tooltip content="Zoom Out" placement="top">
           <button
             id="zoom-out-button"
             class="text-white hover:text-purple-500 transition-colors p-1 rounded"
@@ -94,7 +94,8 @@
           >{{ Math.round(trackZoom * 100) }}%</span
         >
 
-        <el-tooltip content="放大" placement="top">
+        <!-- Zoom in button: Increases timeline scale -->
+        <el-tooltip content="Zoom In" placement="top">
           <button
             id="zoom-in-button"
             class="text-white hover:text-purple-500 transition-colors p-1 rounded"
@@ -104,7 +105,7 @@
             <Icon icon="mdi:plus" width="20" />
           </button>
         </el-tooltip>
-        <!-- 导出 -->
+        <!-- Export -->
         <el-button
           id="export-button"
           class="text-white"
@@ -114,17 +115,17 @@
         >
           <div class="flex items-center gap-2">
             <Icon icon="mdi:export" width="20" />
-            导出
+            Export
           </div>
         </el-button>
       </div>
     </div>
-    <!-- 轨道区域 -->
+    <!-- Track area -->
     <div
       class="h-[calc(100%-36px)] relative overflow-x-scroll"
       ref="trackContainer"
     >
-      <!-- 时间标尺容器 -->
+      <!-- Timeline ruler container -->
       <TimelineRuler
         :duration="timelineDuration"
         :zoom="trackZoom"
@@ -133,7 +134,7 @@
         @scroll="handleRulerScroll"
         @timeUpdate="handleTimeUpdate"
       />
-      <!-- 内容容器 -->
+      <!-- Content container -->
       <div
         class="relative h-[calc(100%-36px)] overflow-x-hidden overflow-y-auto"
         :style="{ width: totalWidth + 'px' }"
@@ -141,12 +142,12 @@
         @dragleave.prevent="handleDragLeave"
         @drop.prevent="handleDrop"
       >
-        <!-- 无轨道时的提示 -->
+        <!-- Prompt when no tracks exist -->
         <div
           v-if="!tracks.length"
           class="absolute w-[10%] left-0 top-0 inset-0 flex flex-col items-center justify-center"
         >
-          <div class="text-[#666] text-lg mb-4">拖拽素材到此处</div>
+          <div class="text-[#666] text-lg mb-4">Drag media here</div>
           <div
             class="w-[200px] h-[40px] bg-purple-500/20 border-2 border-dashed border-purple-500 rounded"
           ></div>
@@ -292,7 +293,8 @@ const handleDragOver = (e: DragEvent) => {
 
         // 检查是否在某个 clip 范围内
         const overlappingClip = currentTrack.clips.find(
-          (clip) => currentTime >= clip.startTime && currentTime <= clip.endTime
+          (clip) =>
+            currentTime >= clip.startTime && currentTime <= clip.endTime,
         );
 
         if (overlappingClip) {
@@ -337,7 +339,7 @@ const resetClipsPosition = () => {
     const currentTrack = props.tracks[hoveredTrack.value];
     currentTrack.clips.forEach((clip) => {
       const original = originalClipsPosition.value.find(
-        (o) => o.id === clip.id
+        (o) => o.id === clip.id,
       );
       if (original) {
         clip.startTime = original.startTime;
@@ -431,7 +433,7 @@ const shiftFollowingClips = (track: any, newClip: any) => {
   if (!track || track?.clips.length === 0) return;
   const previousClip = track.clips.filter(
     (clip) =>
-      clip.endTime > newClip.startTime && clip.startTime < newClip.startTime
+      clip.endTime > newClip.startTime && clip.startTime < newClip.startTime,
   );
   if (previousClip.length !== 0 && dragType.value === 'other') {
     newClip.startTime = previousClip[0].endTime;
@@ -443,7 +445,7 @@ const shiftFollowingClips = (track: any, newClip: any) => {
         clips: [newClip],
       };
       const currentTrackIndex = props.tracks.findIndex(
-        (t) => t.id === track.id
+        (t) => t.id === track.id,
       );
       props.tracks.splice(currentTrackIndex + 1, 0, newTrack);
       track.clips = track.clips.filter((clip) => clip.id !== newClip.id);
@@ -455,7 +457,7 @@ const shiftFollowingClips = (track: any, newClip: any) => {
   }
   const followingClips = track.clips
     .filter(
-      (clip) => clip.id !== newClip.id && clip.startTime >= newClip.startTime
+      (clip) => clip.id !== newClip.id && clip.startTime >= newClip.startTime,
     )
     .sort((a, b) => a.startTime - b.startTime);
   if (
@@ -580,7 +582,7 @@ const handleResize = (event: MouseEvent) => {
       const maxEndTime = startTime + (originalDuration - sourceStartTime);
       const newEndTime = Math.min(
         Math.max(minEndTime, currentTime),
-        maxEndTime
+        maxEndTime,
       );
       const newDuration = newEndTime - startTime;
 
@@ -633,11 +635,11 @@ const stopResize = () => {
     selectedClip.value.startTime = startTime;
     selectedClip.value.duration = duration;
     selectedClip.value.sourceStartTime = Number(
-      selectedClip.value.sourceStartTime
+      selectedClip.value.sourceStartTime,
     );
     selectedClip.value.sourceEndTime = Number(selectedClip.value.sourceEndTime);
     selectedClip.value.originalDuration = Number(
-      selectedClip.value.originalDuration
+      selectedClip.value.originalDuration,
     );
     // 发布更新
     trackStore.publishClipUpdate(selectedClip.value, 'resize');
@@ -846,7 +848,7 @@ const handleDrag = (event: MouseEvent) => {
     // 如果已经吸附，检查是否应该脱离吸附
     if (isSnapped.value && snappedPosition.value !== null) {
       const distanceFromSnapped = Math.abs(
-        currentPixel - snappedPosition.value
+        currentPixel - snappedPosition.value,
       );
       // 只有当移动距离超过阈值一半时才脱离吸附
       if (distanceFromSnapped > SNAP_THRESHOLD / 2) {
@@ -878,7 +880,7 @@ const handleDrag = (event: MouseEvent) => {
 
       // 检查结束位置是否需要吸附到其他片段的开始位置
       const diffEnd = Math.abs(
-        currentPixel + duration * props.frameLength - clipStartPixel
+        currentPixel + duration * props.frameLength - clipStartPixel,
       );
       if (diffEnd <= SNAP_THRESHOLD) {
         isSnapped.value = true;
@@ -895,29 +897,29 @@ const handleDrag = (event: MouseEvent) => {
   draggedClip.value.startTime = Math.max(0, currentPixel / props.frameLength);
   draggedClip.value.endTime = Math.max(
     duration,
-    currentPixel / props.frameLength + duration
+    currentPixel / props.frameLength + duration,
   );
 
   // 如果拖动到其他轨道
   if (currentTrackId && currentTrackId !== originTrackId.value) {
     const targetTrackIndex = props.tracks.findIndex(
-      (t) => t.id === currentTrackId
+      (t) => t.id === currentTrackId,
     );
     if (targetTrackIndex !== -1) {
       // 从原轨道移除
       const originalTrack = props.tracks.find(
-        (t) => t.id === originTrackId.value
+        (t) => t.id === originTrackId.value,
       );
       if (originalTrack) {
         const clipIndex = originalTrack.clips.findIndex(
-          (c) => c.id === draggedClip.value.id
+          (c) => c.id === draggedClip.value.id,
         );
         if (clipIndex !== -1) {
           originalTrack.clips.splice(clipIndex, 1);
           // 添加到新轨道
           props.tracks[targetTrackIndex].clips.push(draggedClip.value);
           props.tracks[targetTrackIndex].clips.sort(
-            (a, b) => Number(a.startTime) - Number(b.startTime)
+            (a, b) => Number(a.startTime) - Number(b.startTime),
           );
           // 更新原始轨道ID
           originTrackId.value = currentTrackId;
@@ -1034,7 +1036,7 @@ const handleRulerScroll = (delta: number) => {
       trackContainer.value.scrollWidth - trackContainer.value.clientWidth;
     const newScrollLeft = Math.max(
       0,
-      Math.min(trackContainer.value.scrollLeft + delta, maxScroll)
+      Math.min(trackContainer.value.scrollLeft + delta, maxScroll),
     );
     trackContainer.value.scrollLeft = newScrollLeft;
   }
@@ -1050,7 +1052,7 @@ watch(
   () => props.tracks,
   async () => {
     canRedo.value = await trackStore.getCanRedo(projectId);
-  }
+  },
 );
 
 const handleUndo = async () => {
@@ -1083,7 +1085,7 @@ const saveHistoryState = async () => {
     deleteEmptyTrack();
     await trackStore.saveHistoryState(
       projectId,
-      JSON.parse(JSON.stringify(props.tracks))
+      JSON.parse(JSON.stringify(props.tracks)),
     );
   }
 };
@@ -1163,7 +1165,7 @@ const handleSplit = async () => {
 // 获取clip所在轨道
 const getClipTrack = (clip: TrackClip) => {
   return props.tracks.find((track) =>
-    track.clips.some((c) => c.id === clip.id)
+    track.clips.some((c) => c.id === clip.id),
   );
 };
 
@@ -1178,7 +1180,7 @@ const handleDelete = () => {
       props.tracks
         .find((track) => track.clips.some((c) => c.id === clip.id))
         ?.clips.findIndex((c) => c.id === clip.id),
-      1
+      1,
     );
   saveHistoryState();
 };

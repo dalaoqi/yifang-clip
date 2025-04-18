@@ -1,30 +1,30 @@
 <!--
- * 文字属性设置组件
- * 用于设置文字的内容、字体、样式、颜色等属性
+ * Text Attribute Settings Component
+ * Used to set text content, font, style, color, etc.
 -->
 <template>
   <div class="mb-6">
-    <div class="text-base font-medium text-white mb-4">文字属性</div>
-    <!-- 文本内容 -->
+    <div class="text-base font-medium text-white mb-4">Text Attributes</div>
+    <!-- Text Content -->
     <div class="mb-2">
       <el-input
         v-model="clip.textConfig.content"
         type="textarea"
         :rows="3"
-        placeholder="请输入文字内容"
+        placeholder="Enter text content"
       />
     </div>
 
-    <!-- 字体设置 -->
+    <!-- Font Settings -->
     <div class="mb-4">
-      <div class="text-base text-white mb-2">字体</div>
+      <div class="text-base text-white mb-2">Font</div>
       <el-select v-model="clip.textConfig.fontFamily" class="w-full mb-2">
         <el-option label="DM Sans" value="DM Sans" />
-        <el-option label="微软雅黑" value="Microsoft YaHei" />
-        <el-option label="宋体" value="SimSun" />
-        <el-option label="黑体" value="SimHei" />
+        <el-option label="Microsoft YaHei" value="Microsoft YaHei" />
+        <el-option label="SimSun" value="SimSun" />
+        <el-option label="SimHei" value="SimHei" />
       </el-select>
-      <div class="text-base text-white mb-2">旋转角度</div>
+      <div class="text-base text-white mb-2">Rotation Angle</div>
       <div class="flex items-center gap-4 mb-3">
         <div class="w-full">
           <el-input-number
@@ -46,7 +46,7 @@
           @mouseleave="stopRotate"
         >
           <div class="w-8 h-8 rounded-full border border-[#af24ff] relative">
-            <!-- 旋转指针 -->
+            <!-- Rotation Pointer -->
             <div
               class="absolute w-[1px] h-[13px] bg-[#af24ff]"
               :style="{
@@ -87,20 +87,20 @@
             <el-dropdown-menu>
               <el-dropdown-item command="left">
                 <Icon icon="material-symbols:format-align-left" />
-                <span class="text-sm text-white ml-2">左对齐</span>
+                <span class="text-sm text-white ml-2">Left Align</span>
               </el-dropdown-item>
               <el-dropdown-item command="center">
                 <Icon icon="material-symbols:format-align-center" />
-                <span class="text-sm text-white ml-2">居中</span>
+                <span class="text-sm text-white ml-2">Center Align</span>
               </el-dropdown-item>
               <el-dropdown-item command="right">
                 <Icon icon="material-symbols:format-align-right" />
-                <span class="text-sm text-white ml-2">右对齐</span>
+                <span class="text-sm text-white ml-2">Right Align</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <!-- 添加颜色选择器 -->
+        <!-- Color Picker -->
         <el-color-picker
           v-model="clip.textConfig.color"
           size="small"
@@ -109,23 +109,23 @@
       </div>
     </div>
 
-    <!-- 高级设置 -->
+    <!-- Advanced Settings -->
     <el-collapse v-model="activeCollapse">
       <el-collapse-item name="advanced">
         <template #title>
-          <span class="text-base text-white">高级</span>
+          <span class="text-base text-white">Advanced</span>
         </template>
-        <!-- 透明度设置 -->
+        <!-- Opacity Setting -->
         <div class="py-2">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-base text-white">透明度</span>
+            <span class="text-base text-white">Opacity</span>
             <div class="flex-1 mx-4">
               <el-slider v-model="clip.opacity" :min="0" :max="100" :step="1" />
             </div>
           </div>
-          <!-- 行高设置 -->
+          <!-- Line Height -->
           <div class="flex justify-between items-center mb-2">
-            <span class="text-base text-white">行高</span>
+            <span class="text-base text-white">Line Height</span>
             <el-input-number
               v-model="clip.textConfig.lineSpacing"
               :min="0"
@@ -134,9 +134,9 @@
               class="w-30"
             />
           </div>
-          <!-- 字间距 -->
+          <!-- Letter Spacing -->
           <div class="flex justify-between items-center mb-2">
-            <span class="text-base text-white">字间距</span>
+            <span class="text-base text-white">Letter Spacing</span>
             <el-input-number
               v-model="clip.textConfig.letterSpacing"
               :step="1"
@@ -144,14 +144,14 @@
               class="w-30"
             />
           </div>
-          <!-- 边框设置 -->
+          <!-- Stroke -->
           <div class="flex justify-between items-center mb-2">
-            <span class="text-base text-white">边框</span>
+            <span class="text-base text-white">Stroke</span>
             <el-switch v-model="clip.textConfig.showStroke" />
           </div>
           <template v-if="clip.textConfig.showStroke">
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">边框颜色</span>
+              <span class="text-base text-white">Stroke Color</span>
               <el-color-picker
                 v-model="clip.textConfig.strokeColor"
                 show-alpha
@@ -159,7 +159,7 @@
               />
             </div>
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">边框宽度</span>
+              <span class="text-base text-white">Stroke Width</span>
               <el-input-number
                 v-model="clip.textConfig.strokeWidth"
                 :min="0"
@@ -169,14 +169,14 @@
               />
             </div>
           </template>
-          <!-- 阴影设置 -->
+          <!-- Shadow -->
           <div class="flex justify-between items-center mb-2">
-            <span class="text-base text-white">阴影</span>
+            <span class="text-base text-white">Shadow</span>
             <el-switch v-model="clip.textConfig.showShadow" />
           </div>
           <template v-if="clip.textConfig.showShadow">
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">阴影颜色</span>
+              <span class="text-base text-white">Shadow Color</span>
               <el-color-picker
                 v-model="clip.textConfig.shadowColor"
                 show-alpha
@@ -184,7 +184,7 @@
               />
             </div>
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">阴影模糊</span>
+              <span class="text-base text-white">Shadow Blur</span>
               <el-input-number
                 v-model="clip.textConfig.shadowBlur"
                 :min="0"
@@ -194,7 +194,7 @@
               />
             </div>
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">水平偏移</span>
+              <span class="text-base text-white">Horizontal Offset</span>
               <el-input-number
                 v-model="clip.textConfig.shadowOffsetX"
                 :step="1"
@@ -203,7 +203,7 @@
               />
             </div>
             <div class="flex justify-between items-center mb-2 pl-4">
-              <span class="text-base text-white">垂直偏移</span>
+              <span class="text-base text-white">Vertical Offset</span>
               <el-input-number
                 v-model="clip.textConfig.shadowOffsetY"
                 :step="1"
@@ -232,7 +232,7 @@ const emit = defineEmits(['update']);
 const isDragging = ref(false);
 const activeCollapse = ref([]);
 
-// 弧度转角度
+// Radians to degrees
 const toDegree = (radian: number) => {
   let degree = radian * (180 / Math.PI);
   degree = degree % 360;
@@ -240,12 +240,12 @@ const toDegree = (radian: number) => {
   return Math.round(degree);
 };
 
-// 角度转弧度
+// Degrees to radians
 const toRadian = (degree: number) => {
   return degree * (Math.PI / 180);
 };
 
-// 显示角度
+// Display angle
 const displayAngle = computed(() => {
   if (props.clip?.angle === undefined) return 0;
   let angle = toDegree(props.clip.angle);
@@ -253,7 +253,7 @@ const displayAngle = computed(() => {
   return angle;
 });
 
-// 输入框显示的角度
+// Angle displayed in input box
 const displayInputAngle = computed({
   get: () => {
     if (props.clip?.angle === undefined) return 0;
@@ -265,7 +265,6 @@ const displayInputAngle = computed({
   },
 });
 
-// 对齐方式图标
 const alignIcon = computed(() => {
   switch (props.clip?.textConfig?.align) {
     case 'center':
@@ -277,7 +276,6 @@ const alignIcon = computed(() => {
   }
 });
 
-// 处理对齐方式
 const handleAlign = (command: 'left' | 'center' | 'right') => {
   if (props.clip) {
     props.clip.textConfig.align = command;
@@ -285,7 +283,6 @@ const handleAlign = (command: 'left' | 'center' | 'right') => {
   }
 };
 
-// 处理角度输入
 const handleAngleInput = (val: number | null) => {
   if (!props.clip) return;
   if (val === null || isNaN(val)) {
@@ -298,12 +295,10 @@ const handleAngleInput = (val: number | null) => {
   emit('update', props.clip);
 };
 
-// 开始旋转
 const startRotate = (e: MouseEvent) => {
   isDragging.value = true;
 };
 
-// 处理旋转
 const handleRotate = (e: MouseEvent) => {
   if (!isDragging.value || !props.clip) return;
 
@@ -319,7 +314,6 @@ const handleRotate = (e: MouseEvent) => {
   emit('update', props.clip);
 };
 
-// 停止旋转
 const stopRotate = () => {
   isDragging.value = false;
 };

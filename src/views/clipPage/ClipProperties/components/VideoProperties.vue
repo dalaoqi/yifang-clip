@@ -1,13 +1,13 @@
 <!--
- * 视频属性设置组件
- * 用于设置视频的位置、旋转、音量、透明度等属性
+ * Video Property Settings Component
+ * Used to configure video position, rotation, volume, opacity, etc.
 -->
 <template>
   <div class="mb-6">
-    <div class="text-base font-medium text-white mb-4">视频属性</div>
+    <div class="text-base font-medium text-white mb-4">Video Properties</div>
     <div class="grid grid-cols-2 gap-3 mb-4">
       <div>
-        <div class="text-base text-[#999] mb-1">X 坐标</div>
+        <div class="text-base text-[#999] mb-1">X Coordinate</div>
         <el-input-number
           class="w-30"
           v-model="clip.x"
@@ -18,7 +18,7 @@
         />
       </div>
       <div>
-        <div class="text-base text-[#999] mb-1">Y 坐标</div>
+        <div class="text-base text-[#999] mb-1">Y Coordinate</div>
         <el-input-number
           class="w-30"
           v-model="clip.y"
@@ -29,9 +29,9 @@
         />
       </div>
     </div>
-    <!-- 旋转角度 -->
+    <!-- Rotation Angle -->
     <div class="mb-4">
-      <div class="text-base text-[#999] mb-2">旋转角度</div>
+      <div class="text-base text-[#999] mb-2">Rotation Angle</div>
       <div class="flex items-center gap-4">
         <div class="w-full">
           <el-input-number
@@ -53,7 +53,7 @@
           @mouseleave="stopRotate"
         >
           <div class="w-8 h-8 rounded-full border border-[#af24ff] relative">
-            <!-- 旋转指针 -->
+            <!-- Rotation Pointer -->
             <div
               class="absolute w-[1px] h-[13px] bg-[#af24ff]"
               :style="{
@@ -73,33 +73,33 @@
     </div>
     <div class="flex gap-3 mb-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">去片头</div>
+        <div class="text-base text-[#999] mb-1">Trim Start</div>
         <el-input-number
           class="w-30"
           :model-value="clip.sourceStartTime"
           size="small"
           :min="0"
           :step="0.1"
-          placeholder="去片头时间"
+          placeholder="Trim start time"
           @change="handleChangeHead"
         />
       </div>
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">去片尾</div>
+        <div class="text-base text-[#999] mb-1">Trim End</div>
         <el-input-number
           class="w-30"
           :model-value="clip.sourceEndTime"
           size="small"
           :min="0"
           :step="0.1"
-          placeholder="去片尾时间"
+          placeholder="Trim end time"
           @change="handleChangeTail"
         />
       </div>
     </div>
     <div class="flex items-center gap-3 mb-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">音量</div>
+        <div class="text-base text-[#999] mb-1">Volume</div>
         <div class="flex items-center gap-3">
           <el-slider v-model="clip.volume" :min="0" :max="100" :step="1" />
           <Icon
@@ -122,7 +122,7 @@
     </div>
     <div class="flex items-center gap-3">
       <div class="flex-1">
-        <div class="text-base text-[#999] mb-1">不透明度</div>
+        <div class="text-base text-[#999] mb-1">Opacity</div>
         <div class="flex items-center gap-3">
           <el-slider v-model="clip.opacity" :min="0" :max="100" :step="1" />
           <div class="w-12 text-right">{{ Math.round(clip.opacity) }}%</div>
@@ -145,10 +145,10 @@ const emit = defineEmits(['update']);
 
 // 注入处理方法
 const handleChangeHead = inject('handleChangeHead') as (
-  val: number | null
+  val: number | null,
 ) => void;
 const handleChangeTail = inject('handleChangeTail') as (
-  val: number | null
+  val: number | null,
 ) => void;
 
 const isDragging = ref(false);

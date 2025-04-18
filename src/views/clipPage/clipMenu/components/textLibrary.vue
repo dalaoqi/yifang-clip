@@ -34,7 +34,7 @@
         @dragstart="handleDragStart(template)"
       >
         <div class="h-8 text-white text-xl mb-2">
-          <img :src="template.preview" class="w-full h-full object-contain" />
+          {{ basicTemplate.preview }}
         </div>
         <!-- Template Name -->
         <div class="text-[#666] text-sm">{{ basicTemplate.name }}</div>
